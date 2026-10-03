@@ -13,8 +13,17 @@ code monkey skills.
 
 ## Requirements
 
-Python 3.10 or later with numpy, scipy and matplotlib; flake8 for `make lint`. There is no
-install step: run from the project root, or put the zip from `make build` on `PYTHONPATH`.
+Python 3.10 or later with the packages in `requirements.txt`: numpy, scipy (1.9 or later,
+for `scipy.optimize.milp`) and matplotlib, plus flake8 for `make lint`.
+
+```bash
+make deps                        # create ./.venv/ and install requirements.txt into it
+source .venv/bin/activate        # optional: make deps targets use .venv/ automatically
+```
+
+`make deps` creates the environment with `python3`; pick another interpreter with
+`make deps BOOTSTRAP_PYTHON=python3.12`. There is no install step for the package itself:
+run from the project root, or put the zip from `make build` on `PYTHONPATH`.
 
 ## Command line
 
@@ -91,26 +100,17 @@ screen `b/t > 1.40·√(E/Fy)` applies to both methods.
 | Command | What it does |
 | --- | --- |
 | `make help` | list the targets (also the default) |
-| `make clean` | remove `__pycache__/`, `dist/` and `output/` |
+| `make deps` | create `./.venv/` and install `requirements.txt` into it; safe to rerun after editing it |
+| `make clean` | remove `__pycache__/`, `dist/` and `output/` (keeps `.venv/`) |
 | `make lint` | flake8, 120-column lines, E203 ignored |
 | `make test` | all 86 tests, including the slow performance tests (about 30–60 s) |
-| `make build` | clean, then zip `truss_bridge/`, `README.md` and `example.csv` into `dist/truss_bridge.zip`, leaving out caches and any `output/` |
+| `make build` | clean, then zip `truss_bridge/`, `README.md`, `LICENSE.txt`, `requirements.txt` and `example.csv` into `dist/truss_bridge.zip`, leaving out caches, `output/` and `.venv/` |
 
-`make` uses `python`; choose another interpreter with `make test PYTHON=/path/to/python`.
+`make` uses `.venv/bin/python` once `make deps` has run, and `python` before that; override
+with `make test PYTHON=/path/to/python`. Git ignores `.venv/`, `dist/`, `output/` and caches
+(see `.gitignore`).
 To skip the performance tests (about 3 s), run
 `TRUSS_BRIDGE_SKIP_PERFORMANCE=1 python -m unittest discover -s tests -t .`.
-
-Every Python file starts with a docstring giving its path, a description, and the
-copyright line:
-
-```python
-"""truss_bridge/solver.py
-
-Top-level design entry point.
-
-(c) 2026 Sam Caldwell <mail@samcaldwell.net>
-"""
-```
 
 ## Modules
 
@@ -150,6 +150,10 @@ would.
 Parts are matched to members by length alone, to minimize trim. Material and section play
 no part in that choice, so a weak part can land in a heavily loaded member. The load test
 then reports it, but the search does not avoid it.
+
+## License
+
+MIT; see [LICENSE.txt](LICENSE.txt).
 
 ---
 

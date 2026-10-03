@@ -1,0 +1,7 @@
+# Runtime
+numpy>=1.23
+scipy>=1.9        # scipy.optimize.milp
+matplotlib>=3.5
+
+# Development (make lint)
+flake8>=6

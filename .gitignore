@@ -10,7 +10,7 @@ output/
 bridge_*.png
 
 # Virtual environments
-.venv/
+.venv
 venv/
 
 # Editors and OS
