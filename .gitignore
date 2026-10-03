@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# make build / make clean
+dist/
+
+# Drawings from python -m truss_bridge (output/, and bridge_*.png from older runs)
+output/
+bridge_*.png
+
+# Virtual environments
+.venv/
+venv/
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
